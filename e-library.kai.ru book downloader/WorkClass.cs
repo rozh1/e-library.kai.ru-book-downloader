@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Xml;
 using iTextSharp.text;
@@ -160,15 +161,7 @@ namespace e_library.kai.ru_book_downloader
                 SendTextStatus("Конвертирование страницы " + (i + 1) + " в Ч/Б tiff");
                 Image tiffImg = Image.FromFile(SavePath + "\\" + (i + 1) + ".jpg");
                 var bm = new Bitmap(tiffImg);
-                for (int y = 0; y < bm.Height; y++)
-                {
-                    for (int x = 0; x < bm.Width; x++)
-                    {
-                        Color c = bm.GetPixel(x, y);
-                        var luma = (int) (c.R*0.3 + c.G*0.59 + c.B*0.11);
-                        bm.SetPixel(x, y, luma > 160 ? Color.White : Color.Black);
-                    }
-                }
+                MakeBalackWhite(bm);
                 tiffImg.Dispose();
                 bm.Save(SavePath + "\\" + (i + 1) + ".tiff", myImageCodecInfo, myEncoderParameters);
                 bm.Dispose();
@@ -217,6 +210,45 @@ namespace e_library.kai.ru_book_downloader
                 if (delOldFiles) Directory.Delete(SavePath, true);
                 document.Close();
             }
+        }
+
+        public void MakeBalackWhite(Bitmap bmp)
+        {
+            // Задаём формат Пикселя.
+            PixelFormat pxf = PixelFormat.Format32bppArgb;
+
+            // Получаем данные картинки.
+            System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
+            //Блокируем набор данных изображения в памяти
+            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, pxf);
+
+            // Получаем адрес первой линии.
+            IntPtr ptr = bmpData.Scan0;
+
+            int numBytes = bmpData.Width * bmp.Height * 4;
+            byte[] rgbValues = new byte[numBytes];
+
+            // Копируем значения в массив.
+            Marshal.Copy(ptr, rgbValues, 0, numBytes);
+
+            // Перебираем пикселы по 4 байта на каждый и меняем значения
+            for (int counter = 0; counter < rgbValues.Length; counter += 4)
+            {
+                var luma = (int)(rgbValues[counter + 0] * 0.3 + rgbValues[counter + 1] * 0.59 + rgbValues[counter + 2] * 0.11);
+                byte color_b = 0;
+
+                if (luma > 160) color_b = 255;
+
+                rgbValues[counter + 0] = color_b;
+                rgbValues[counter + 1] = color_b;
+                rgbValues[counter + 2] = color_b;
+
+            }
+            // Копируем набор данных обратно в изображение
+            Marshal.Copy(rgbValues, 0, ptr, numBytes);
+
+            // Разблокируем набор данных изображения в памяти.
+            bmp.UnlockBits(bmpData);
         }
     }
 }
