@@ -80,10 +80,10 @@ namespace e_library.kai.ru_book_downloader
         private void WorkThread()
         {
             var wc = new WorkClass(BookURL.Text, SavePath.Text + "\\" + BookName.Text);
-            wc.status += ProgressHandler;
-            wc.tstatus += TextStatusHandler;
+            wc.Status += ProgressHandler;
+            wc.Tstatus += TextStatusHandler;
             wc.Download();
-            progressBar1.Maximum = wc.pagesCount;
+            progressBar1.Maximum = wc.PagesCount;
             if (ConvertEn.Checked) wc.Convert(DelEn.Checked);
             if (PdfEn.Checked) wc.CreatePDF(DelEn.Checked);
             MessageBox.Show("Скачивание книги завершено!", "Все готово!", MessageBoxButtons.OK,

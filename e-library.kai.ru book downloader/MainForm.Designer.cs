@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.label1 = new System.Windows.Forms.Label();
             this.BookURL = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -36,12 +37,12 @@
             this.BookName = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ConvertEn = new System.Windows.Forms.CheckBox();
-            this.PdfEn = new System.Windows.Forms.CheckBox();
-            this.DelEn = new System.Windows.Forms.CheckBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.StatusLabel = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.DelEn = new System.Windows.Forms.CheckBox();
+            this.PdfEn = new System.Windows.Forms.CheckBox();
+            this.ConvertEn = new System.Windows.Forms.CheckBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -120,6 +121,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Статус";
             // 
+            // StatusLabel
+            // 
+            this.StatusLabel.AutoSize = true;
+            this.StatusLabel.Location = new System.Drawing.Point(6, 16);
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(68, 13);
+            this.StatusLabel.TabIndex = 2;
+            this.StatusLabel.Text = "Ожидание...";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(6, 35);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(545, 23);
+            this.progressBar1.TabIndex = 0;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.DelEn);
@@ -132,15 +149,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Настройки";
             // 
-            // ConvertEn
+            // DelEn
             // 
-            this.ConvertEn.AutoSize = true;
-            this.ConvertEn.Location = new System.Drawing.Point(6, 19);
-            this.ConvertEn.Name = "ConvertEn";
-            this.ConvertEn.Size = new System.Drawing.Size(451, 17);
-            this.ConvertEn.TabIndex = 0;
-            this.ConvertEn.Text = "Ковертировать страницы в Ч/Б tiff (очень сильное уменьшение итогового размера)";
-            this.ConvertEn.UseVisualStyleBackColor = true;
+            this.DelEn.AutoSize = true;
+            this.DelEn.Location = new System.Drawing.Point(6, 65);
+            this.DelEn.Name = "DelEn";
+            this.DelEn.Size = new System.Drawing.Size(416, 17);
+            this.DelEn.TabIndex = 2;
+            this.DelEn.Text = "Удалить все ненужные файлы (например, все картинки после создания pdf)";
+            this.DelEn.UseVisualStyleBackColor = true;
             // 
             // PdfEn
             // 
@@ -152,31 +169,15 @@
             this.PdfEn.Text = "Создавать на выходе файл pdf";
             this.PdfEn.UseVisualStyleBackColor = true;
             // 
-            // DelEn
+            // ConvertEn
             // 
-            this.DelEn.AutoSize = true;
-            this.DelEn.Location = new System.Drawing.Point(6, 65);
-            this.DelEn.Name = "DelEn";
-            this.DelEn.Size = new System.Drawing.Size(416, 17);
-            this.DelEn.TabIndex = 2;
-            this.DelEn.Text = "Удалить все ненужные файлы (например, все картинки после создания pdf)";
-            this.DelEn.UseVisualStyleBackColor = true;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(6, 35);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(545, 23);
-            this.progressBar1.TabIndex = 0;
-            // 
-            // StatusLabel
-            // 
-            this.StatusLabel.AutoSize = true;
-            this.StatusLabel.Location = new System.Drawing.Point(6, 16);
-            this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(68, 13);
-            this.StatusLabel.TabIndex = 2;
-            this.StatusLabel.Text = "Ожидание...";
+            this.ConvertEn.AutoSize = true;
+            this.ConvertEn.Location = new System.Drawing.Point(6, 19);
+            this.ConvertEn.Name = "ConvertEn";
+            this.ConvertEn.Size = new System.Drawing.Size(451, 17);
+            this.ConvertEn.TabIndex = 0;
+            this.ConvertEn.Text = "Ковертировать страницы в Ч/Б tiff (очень сильное уменьшение итогового размера)";
+            this.ConvertEn.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
@@ -206,6 +207,7 @@
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "e-library.kai.ru book downloader";
