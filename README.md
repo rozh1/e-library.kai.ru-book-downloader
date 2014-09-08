@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/sit7frmklwpnn29r)](https://ci.appveyor.com/project/rozh1/e-library-kai-ru-book-downloader)
+
 e-library.kai.ru-book-downloader
 ================================
 
