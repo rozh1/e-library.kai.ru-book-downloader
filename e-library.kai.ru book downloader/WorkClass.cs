@@ -106,6 +106,7 @@ namespace e_library.kai.ru_book_downloader
 
         public void Download()
         {
+            int count = 0;
             GetPagesList();
             if (PagesCount == 0) return;
             if (!(Directory.Exists(_savePath)))
@@ -115,26 +116,50 @@ namespace e_library.kai.ru_book_downloader
             var wc = new WebClient();
             wc.DownloadProgressChanged += wc_DownloadProgressChanged;
             wc.DownloadFileCompleted += wc_DownloadFileCompleted;
+
+
             for (int i = 0; i < _pages.Count; i++)
             {
-                SendProgress(i);
-                _downloaded = false;
-                var pageUri = new Uri(_url + _pages[i]);
-                _nowDownloading = "Загрузка страницы №" + (i + 1) + "...";
-                SendTextStatus(_nowDownloading);
-                try
+                int downCount = 0;
+                bool fullDownloaded = false;
+                while (!fullDownloaded)
                 {
-                    wc.DownloadFileAsync(pageUri, _savePath + "\\" + (i + 1) + ".jpg");
+                    fullDownloaded = true;
+                    SendProgress(i);
+                    _downloaded = false;
+                    var pageUri = new Uri(_url + _pages[i]);
+                    _nowDownloading = "Загрузка страницы №" + (i + 1) + (downCount>0 ? "(попытка " +(downCount+1) + ")" : "") + "...";
+                    SendTextStatus(_nowDownloading);
+                    try
+                    {
+                        wc.DownloadFileAsync(pageUri, _savePath + "\\" + (i + 1) + ".jpg");
+                    }
+                    catch (WebException we)
+                    {
+                        SendTextStatus(we.Message + "\n" + we.Status);
+                    }
+                    catch (NotSupportedException ne)
+                    {
+                        SendTextStatus(ne.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        SendTextStatus(ex.Message);
+                    }
+                    while (!_downloaded)
+                    {
+                        Thread.Sleep(10);
+                        count++;
+                        if (count > 1000)
+                        {
+                            count = 0;
+                            wc.CancelAsync();
+                            fullDownloaded = false;
+                            downCount++;
+                        }
+                    }
+
                 }
-                catch (WebException we)
-                {
-                    SendTextStatus(we.Message + "\n" + we.Status);
-                }
-                catch (NotSupportedException ne)
-                {
-                    SendTextStatus(ne.Message);
-                }
-                while (!_downloaded) Thread.Sleep(10);
             }
         }
 
