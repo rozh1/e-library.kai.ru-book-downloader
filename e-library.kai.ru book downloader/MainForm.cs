@@ -23,16 +23,9 @@ namespace e_library.kai.ru_book_downloader
         private void button2_Click(object sender, EventArgs e)
         {
             t = new Thread(WorkThread);
-            if (!BookURL.Text.EndsWith(".pdf")) BookURL.Text = BookURL.Text.Remove(BookURL.Text.Length - 11);
-            if (BookURL.Text.EndsWith(".pdf"))
-            {
-                t.Start();
-                button2.Enabled = false;
-            }
-            else
-            {
-                MessageBox.Show("Неправильный URL");
-            }
+            if (BookURL.Text.Contains("/index.html")) BookURL.Text = BookURL.Text.Replace("/index.html","");
+            t.Start();
+            button2.Enabled = false;
         }
 
         private void ProgressHandler(int i, int mode)

@@ -90,7 +90,7 @@ namespace e_library.kai.ru_book_downloader
                                     {
                                         if (attr.Name == "LargeFile")
                                         {
-                                            _pages.Add("/" + attr.Value);
+                                            _pages.Add("/" + attr.Value.Replace("\r\n",""));
                                         }
                                     }
                                 }
